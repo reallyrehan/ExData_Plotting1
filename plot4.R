@@ -2,7 +2,10 @@ library(ggplot2)
 library(scales)
 library(gridExtra)
 
-setwd('./Documents/coursera/Course 4 - Exploratory Data Analysis')
+if(!file.exists('household_power_consumption.txt')){
+        print('File not in working directory!')
+        
+}
 
 data <- read.table('household_power_consumption.txt',header=TRUE,sep=';')
 
@@ -19,17 +22,9 @@ for(i in (3:9)){
 with(subset(p.data,!is.na(Global_active_power)),{
         hist(Global_active_power,main='Global Active Power',breaks=30)
         
-       
+        
 })
 
-e <- ggplot(subset(p.data,!is.na(Global_active_power)),aes(Global_active_power))+
-        geom_histogram(fill='red',color='black',binwidth = 0.4)+
-        scale_x_continuous(breaks=seq(0,8,2))+
-        scale_y_continuous(breaks= seq(0,1200,200))+
-        theme_linedraw()+
-        xlab('Global active power (kilowatts)')+
-        ylab('Frequency')+
-        ggtitle('Global Active Power')
 
 
 p.data$Date <- p.data$Date+1
@@ -42,7 +37,7 @@ a <- ggplot(p.data,aes(datetime,Global_active_power))+
         ylab('Global Active Power (kilowatts)')+
         xlab('')+
         theme_linedraw()
-        
+
 b <- ggplot(p.data,aes(datetime))+
         geom_line(aes(y=Sub_metering_3,color='Sub_metering_3'))+
         geom_line(aes(y=Sub_metering_2,color='Sub_metering_2'))+
@@ -70,9 +65,4 @@ d <- ggplot(p.data,aes(datetime,Global_reactive_power))+
         theme_linedraw()
 
 grid.arrange(a,c,b,d)
-ggsave('plot1.png',plot=e,width=4,height=4,units='in')
-ggsave('plot2.png',plot=a,width=4,height=4,units='in')
-ggsave('plot3.png',plot=b,width=4,height=4,units='in')
-ggsave('plot1.png',plot=e,width=3,height=3,units='in')
 
-                     
